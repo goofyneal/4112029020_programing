@@ -9,17 +9,17 @@ cursor.execute('''
         name TEXT,
         price INTERGER,
         quantity INTERGER
-    )''')
+    )''')#表格
 
 cursor.execute("INSERT INTO meat(id,name,price,quantity) VALUES(1,'chicken',30,5)")
 cursor.execute("INSERT INTO meat(id,name,price,quantity) VALUES(2,'beaf',55,10)")
 cursor.execute("INSERT INTO meat(id,name,price,quantity) VALUES(3,'pork',40,15)")
-conn.commit()
+conn.commit()#提交
 cursor.execute("SELECT*FROM meat")
 meat=cursor.fetchall()
+
+
 print("BBQ列表:")
-
-
 for MEAT in meat:
     print(MEAT)
 
@@ -28,8 +28,8 @@ cursor.execute("UPDATE meat SET quantity = 30 WHERE name = 'chicken'")
 conn.commit()
 cursor.execute("SELECT*FROM meat")
 meat=cursor.fetchall()
-print("BBQ列表:")
 
+print("BBQ列表:")
 for MEAT in meat:
     print(MEAT)
 
