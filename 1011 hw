@@ -1,0 +1,113 @@
+'''建立一個學生選課系統
+ 此系統應該包括：
+• 課程：課程包括課名、選課號碼、上課時間、教授
+• 可以輸入課程 並且做格式限制ex:選課號碼為5377(4位數字)
+• 學生：學生包括姓名、學號
+• 可以輸入學生 並且做格式限制ex:學號碼為4106029077(10位數字)
+• 學生可以選課、加選 也可以退選
+• 將在編寫程式時遇到的error截圖、並說明如何解'''
+
+
+class Course:
+    def __init__(self, course_name, course_code, schedule, professor):
+        self.course_name = course_name
+        self.course_code = course_code
+        self.schedule = schedule
+        self.professor = professor
+
+class Student:
+    def __init__(self, student_name, student_code):
+        self.student_name = student_name
+        self.student_code = student_code
+
+class CourseRegistration:
+    def __init__(self):
+        self.courses = []
+        self.students = []
+        self.registrations = []
+
+    def add_course(self, course_name, course_code, schedule, professor):
+        course = Course(course_name, course_code, schedule, professor)
+        self.courses.append(course)
+        print(f"課程 '{course.course_name}' 添加成功!")
+
+    def add_student(self, student_name, student_code):
+        student = Student(student_name, student_code)
+        self.students.append(student)
+        print(f"學生 '{student.student_name}' 添加成功!")
+        
+    def enroll_student(self, student_code, course_code):
+        student = next((k for k in self.students if k.student_code == student_code), None)
+        course = next((c for c in self.courses if c.course_code == course_code), None)
+
+        if student is None:
+            print("找不到學生，請檢查學號。")
+        elif course is None:
+            print("找不到課程，請檢查課程號。")
+        else:
+            self.registrations.append((student, course))
+            print(f"學生 '{student.student_name}' 選課成功!")
+    
+
+    def withdraw_student(self, student_code, course_code):
+        registration = next((r for r in self.registrations if r[0].student_code == student_code and r[1].course_code == course_code), None)
+
+        if registration is not None:
+            self.registrations.remove(registration)
+            print(f"學生 '{registration[0].student_name}' 退課成功!")
+        else:
+            print("找不到選課紀錄，請檢查學號或課程號。")
+
+    def show_courses(self):
+        for course in self.courses:
+            print(f"選課名稱: {course.course_name}, 選課號碼: {course.course_code}, 上課時間: {course.schedule}, 教授: {course.professor}")
+
+    def show_students(self):
+        for student in self.students:
+            for course in self.courses:
+                print(f"學生姓名: {student.student_name}, 學號: {student.student_code},選課名稱: {course.course_name}, 選課號碼: {course.course_code}, 上課時間: {course.schedule}, 教授: {course.professor}")
+
+
+registration_system = CourseRegistration()
+
+while True:
+    print("\n學生選課系统")
+    print("1. 添加課程")
+    print("2. 添加學生")
+    print("3. 選課")
+    print("4. 退選")
+    print("5. 顯示課程")
+    print("6. 顯示學生選課")
+    print("7. 退出")
+
+
+    choice = input("請選擇操作: ")
+
+    if choice == "1":
+        course_name = input("請輸入課程名稱: ")
+        course_code = input("請輸入選課號碼 (4位數字): ")
+        schedule = input("請輸入上課時間: ")
+        professor = input("請輸入教授姓名: ")  
+        registration_system.add_course(course_name, course_code, schedule, professor)
+    elif choice == "2":
+        student_name = input("請輸入學生姓名: ")
+        student_code = input("請輸入學號 (10位數字): ")
+        registration_system.add_student(student_name, student_code)
+    elif choice == "3":
+        student_code = input("請輸入學生學號: ")
+        course_code = input("請輸入要選的課程號: ")
+        registration_system.enroll_student(student_code, course_code)
+    elif choice == "4":
+        student_code = input("請輸入學生的學號: ")
+        course_code = input("請輸入要退的課程號: ")
+        registration_system.withdraw_student(student_code, course_code)
+    elif choice == "5":
+        registration_system.show_courses()
+    elif choice == "6":
+        registration_system.show_students()
+
+    elif choice == "7":
+        print("感謝使用。")
+        break
+    else:
+        print("無效的選擇!。")
